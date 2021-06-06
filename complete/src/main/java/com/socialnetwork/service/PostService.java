@@ -9,6 +9,7 @@ import com.socialnetwork.exception.NotFoundException;
 import com.socialnetwork.model.Comment;
 import com.socialnetwork.model.Post;
 import com.socialnetwork.repository.PostRepository;
+import com.socialnetwork.validation.PostValidation;
 
 @Service
 public class PostService {
@@ -32,8 +33,9 @@ public class PostService {
 	}
 
 	public Post addPost(Post newPost) {
-		kafkaService.asyncValidatePost(newPost);
-		return postRepository.save(newPost);
+		Post savedPost = postRepository.save(newPost);
+		kafkaService.asyncValidatePost(savedPost);
+		return savedPost;
 	}
 	
 	public List<Post> getPosts() {
@@ -48,6 +50,15 @@ public class PostService {
 	
 	public List<Comment> getCommentsOfPost(String postID) throws NotFoundException {
 		return getPost(postID).getComments();
+	}
+
+	public Post validatePost(PostValidation postValidation) {
+		String postId = postValidation.getPostId();
+		return postRepository.findById(postId).map(post -> {
+			post.setValid(postValidation.isValid());
+			postRepository.save(post);
+			return post;
+		}).orElseThrow(() -> new NotFoundException(postId));
 	}
 
 	

@@ -18,6 +18,7 @@ public class Post {
 	private String author;
 	private String title;
 	private String content;
+	private boolean valid;
 
 	@CreatedDate
 	private Date createdDate;
@@ -28,6 +29,8 @@ public class Post {
 	@JsonIgnore
 	private List<Comment> comments;
 
+	public Post() {}
+	
 	public Post(String title, String content) {
 		this.title = title;
 		this.content = content;
@@ -64,22 +67,22 @@ public class Post {
 	public void setContent(String content) {
 		this.content = content;
 	}
-
+	
+	public boolean isValid() {
+		return valid;
+	}
+	
+	public void setValid(boolean valid) {
+		this.valid = valid;
+		validatedDate = new Date();
+	}
+	
 	public Date getCreatedDate() {
 		return createdDate;
 	}
 
 	public Date getValidatedDate() {
 		return validatedDate;
-	}
-
-	public void setValidatedDate(Date validatedDate) {
-		this.validatedDate = validatedDate;
-	}
-	
-	@JsonIgnore
-	public boolean isValidated() {
-		return this.validatedDate != null;
 	}
 
 	public List<Comment> getComments() {

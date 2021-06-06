@@ -14,14 +14,18 @@ public class Comment {
 
 	@Indexed
 	private String author;
-	
+
 	private String content;
+	
+	private boolean valid;
 	
 	@CreatedDate
 	private Date createdDate; 
 	
 	private Date validatedDate; 
 
+	public Comment() {}
+	
 	public Comment(String author, String content) {
 		this.author = author;
 		this.content = content;
@@ -50,7 +54,16 @@ public class Comment {
 	public void setContent(String content) {
 		this.content = content;
 	}
+	
+	public boolean isValid() {
+		return valid;
+	}
 
+	public void setValid(boolean valid) {
+		this.valid = valid;
+		validatedDate = new Date();
+	}
+	
 	public Date getCreatedDate() {
 		return createdDate;
 	}
@@ -59,14 +72,6 @@ public class Comment {
 		return validatedDate;
 	}
 
-	public void setValidatedDate(Date validatedDate) {
-		this.validatedDate = validatedDate;
-	}
-
-	public boolean isValidated() {
-		return this.validatedDate != null;
-	}
-	
 	@Override
 	public boolean equals(Object o) {
 		if (this == o)

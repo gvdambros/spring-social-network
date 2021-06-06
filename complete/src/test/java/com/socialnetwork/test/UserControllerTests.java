@@ -86,7 +86,7 @@ public class UserControllerTests {
 		String postID = JsonPath.read(result.getResponse().getContentAsString(), "$[0].id");
 		
 		this.mockMvc.perform(get("/users/" + userID + "/posts/" + postID)).andDo(print()).andExpect(status().isOk())
-			.andExpect(jsonPath("$.id", is(postID)));
+			.andExpect(jsonPath("$.id", is(postID))).andExpect(jsonPath("$.valid", is(true)));
 	}
 
 	@Test
